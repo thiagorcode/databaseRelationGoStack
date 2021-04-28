@@ -23,6 +23,7 @@ export default class CreateOrder1619396933088 implements MigrationInterface {
             type: 'uuid',
             isNullable: true,
           },
+
           {
             name: 'created_at',
             type: 'timestamp',
@@ -41,7 +42,7 @@ export default class CreateOrder1619396933088 implements MigrationInterface {
       new TableForeignKey({
         name: 'orderCustomer',
         columnNames: ['customer_id'],
-        referencedTableName: 'user',
+        referencedTableName: 'customer',
         referencedColumnNames: ['id'],
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
@@ -50,6 +51,7 @@ export default class CreateOrder1619396933088 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropForeignKey('order', 'orderCustomer');
     await queryRunner.dropTable('order');
   }
 }
