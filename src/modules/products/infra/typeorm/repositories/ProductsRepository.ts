@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { getRepository, Repository, In } from 'typeorm';
 
 import IProductsRepository from '@modules/products/repositories/IProductsRepository';
@@ -36,27 +37,26 @@ class ProductsRepository implements IProductsRepository {
   }
 
   public async findAllById(products: IFindProducts[]): Promise<Product[]> {
-    const productValidation = products.map(product => {
-      const findProduct = this.ormRepository
-        .findOne(product.id)
-        .then(data => {
-          console.log(data);
-          return data;
-        })
-        .catch(err => {
-          throw new AppError(
-            `Product requisition did not return data - ${err}`,
-          );
-        });
-      console.log(findProduct);
-      return findProduct;
-    });
+    const productNew: Product[] = [];
 
-    if (!productValidation) {
+    for (const product of products) {
+      // eslint-disable-next-line no-await-in-loop
+      const promiseProduct = await this.ormRepository.findOne({
+        where: { id: product.id },
+      });
+
+      if (!promiseProduct) {
+        throw new AppError('Non-existing Product!');
+      }
+
+      productNew.push(promiseProduct);
+    }
+
+    if (!productNew) {
       throw new AppError('Product requisition did not return data');
     }
 
-    return productValidation;
+    return productNew;
   }
 
   public async updateQuantity(
