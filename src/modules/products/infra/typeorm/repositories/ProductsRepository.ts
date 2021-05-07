@@ -41,15 +41,15 @@ class ProductsRepository implements IProductsRepository {
 
     for (const product of products) {
       // eslint-disable-next-line no-await-in-loop
-      const promiseProduct = await this.ormRepository.findOne({
+      const findProductID = await this.ormRepository.findOne({
         where: { id: product.id },
       });
 
-      if (!promiseProduct) {
+      if (!findProductID) {
         throw new AppError('Non-existing Product!');
       }
 
-      productNew.push(promiseProduct);
+      productNew.push(findProductID);
     }
 
     if (!productNew) {
