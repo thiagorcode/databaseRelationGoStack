@@ -37,31 +37,22 @@ class ProductsRepository implements IProductsRepository {
   }
 
   public async findAllById(products: IFindProducts[]): Promise<Product[]> {
-    const productNew: Product[] = [];
+    const productIds = products.map(product => product.id);
 
-    for (const product of products) {
-      // eslint-disable-next-line no-await-in-loop
-      const findProductID = await this.ormRepository.findOne({
-        where: { id: product.id },
-      });
+    const existentProducts = await this.ormRepository.find({
+      where: {
+        id: In(productIds),
+      },
+    });
 
-      if (!findProductID) {
-        throw new AppError('Non-existing Product!');
-      }
-
-      productNew.push(findProductID);
-    }
-
-    if (!productNew) {
-      throw new AppError('Product requisition did not return data');
-    }
-
-    return productNew;
+    return existentProducts;
   }
 
   public async updateQuantity(
     products: IUpdateProductsQuantityDTO[],
-  ): Promise<Product[]> { }
+  ): Promise<Product[]> {
+    return this.ormRepository.save(products);
+  }
 }
 
 export default ProductsRepository;
