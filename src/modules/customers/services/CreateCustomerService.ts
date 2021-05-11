@@ -25,7 +25,6 @@ class CreateCustomerService {
     if (customerEmailExists) {
       throw new AppError(
         'Informed email already registered. Sign up with another email.',
-        403,
       );
     }
 

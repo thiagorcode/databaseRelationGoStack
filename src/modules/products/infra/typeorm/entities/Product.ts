@@ -9,7 +9,7 @@ import {
 
 import OrdersProducts from '@modules/orders/infra/typeorm/entities/OrdersProducts';
 
-@Entity('product')
+@Entity('products')
 class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -17,7 +17,7 @@ class Product {
   @Column()
   name: string;
 
-  @Column('decimal', { precision: 6, scale: 3 })
+  @Column('decimal', { precision: 10, scale: 3 })
   price: number;
 
   @Column()
