@@ -22,10 +22,12 @@ export default class CreateOrderProduct1619533787879
           {
             name: 'product_id',
             type: 'uuid',
+            isNullable: true,
           },
           {
             name: 'order_id',
             type: 'uuid',
+            isNullable: true,
           },
           {
             name: 'price',

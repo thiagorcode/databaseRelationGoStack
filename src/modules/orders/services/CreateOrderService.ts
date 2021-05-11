@@ -79,7 +79,7 @@ class CreateOrderService {
     const { order_products } = order;
 
     const orderedProductQuantity = order_products.map(product => ({
-      id: product.id,
+      id: product.product_id,
       quantity:
         allProducts.filter(p => p.id === product.product_id)[0].quantity -
         product.quantity,
